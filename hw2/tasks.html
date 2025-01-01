@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Homework 2: Tasks for fof2</title>
+</head>
+
+<body>
+<h1>Homework 2: Tasks for fof2</h1>
+
+<p>Your personal task is to develop a system for a newspaper, journalists and their articles.</p>
+
+<h2>Task 1: Configuration [12 marks]</h2>
+<ol>
+    <li>Add all the necessary dependencies for connecting to a MySQL database and showing JSPs. [7 marks]</li>
+    <li>Configure the application to use a MySQL database (username, password, etc.) and to print SQL statements on the console. [5 marks]</li>
+</ol>
+
+<h2>Task 2: Domain Classes [15 marks]</h2>
+<p>Create class <code>co2123.hw2.model.Newspaper</code>. With the following private fields:
+<ol>
+    <li><code>int id</code></li>
+    <li><code>String name</code></li>
+    <li><code>List &ltJournalist&gt journalists</code></li>
+    <li><code>Journalist boss</code></li>
+</ol>
+Generate necessary getters and setters. [3 marks]
+</p>
+<p>Create class <code>co2123.hw2.model.Journalist</code>. With the following private fields:
+<ul>
+    <li><code>String speciality</code></li>
+    <li><code>List &ltNewspaper&gt newspapers</code></li>
+    <li><code>List &ltArticle&gt articles</code></li>
+    <li><code>Article popular</code></li>
+</ul>
+Generate necessary getters and setters. [3 marks]
+</p>
+<p>Create class <code>co2123.hw2.model.Article</code>. With the following private fields:
+<ol>
+    <li><code>int identifier</code></li>
+    <li><code>int visits</code></li>
+</ol>
+Generate necessary getters and setters. [3 marks]
+</p>
+<p>Generate toString() methods for: [6 marks]
+<ul>
+    <li>Article which prints out the <code>identifier</code> and <code>visits</code> of this class.</li>
+    <li>Journalist which prints out the <code>speciality</code>, <code>articles</code>, and <code>popular</code> of this class.</li>
+    <li>Newspaper which prints out the <code>id</code>, <code>name</code>, <code>journalists</code>, and <code>boss</code> of this class.</li>
+</ul>
+</p>
+<p>To format your toString(), integers should be displayed as id=X and Strings as speciality='X'. You can check your formatting using Task2Test.java. IntelliJ IDEA's in-built toString() generator should follow this format too. </p><p>NOTE: You must have created /listNewspaper, /listJournalist, and /listArticle from Task 5 as well as have at least one of each object stored in your database for the toString() tests to work.</p>
+
+<h2>Task 3: JPA Annotations [25 marks]</h2>
+<p>Annotate the classes in <code>co2123.hw2.model</code> based on these statements:
+<ul>
+    <li>Add the appropriate annotations so <code>Newspaper</code>, <code>Journalist</code>, and <code>Article</code> become tables in your database. [3 marks]</li>
+    <ul>
+        <li>Their primary keys should be <code>id</code>, <code>speciality</code>, and <code>identifier</code> respectively. [3 marks]</li>
+        <li>The primary keys of <code>Newspaper</code> and <code>Article</code> should be generated automatically. [2 marks]</li>
+    </ul>
+    <li>A <code>newspaper</code> can have many <code>journalists</code> and a <code>journalist</code> can belong to many <code>newspapers</code>. The relationship between them is bidirectional. Use mappedBy to indicate this. [2 marks]</li>
+    <li>A <code>journalist</code> can have multiple <code>articles</code> but one <code>article</code> can only belong to one <code>journalist</code>. Use a join column as well as another annotation to indicate this. [2 marks]</li>
+    <li>A <code>journalist</code> can have only one <code>popular</code> which belongs to one <code>journalist</code>. [2 marks]</li>
+    <li>Many <code>journalists</code> may have one <code>boss</code>. This <code>boss</code> can belong to multiple <code>journalists</code>. [2 marks]</li>
+    <li>If you save a <code>newspaper</code>, the <code>journalists</code> in the list of <code>journalists</code> should be saved too. [2 marks]</li>
+    <li>If a <code>journalist</code> is deleted, all its <code>articles</code> should be deleted too. [2 marks].</li>
+    <li>If a <code>journalist</code> is loaded, all its <code>articles</code> should be loaded too. [2 marks]</li>
+</ul>
+</p>
+<p>Please <strong>do not</strong> manually override the column names by using, for example, (name="NewName") on a @JoinColumn annotation.</p>
+<p>Create CRUD repositories for each of your model classes inside the package <code>co2123.hw2.repo</code> called <code>NewspaperRepository</code>, <code>JournalistRepository</code>, and <code>ArticleRepository</code>. [3 marks]</p>
+
+<h2>Task 4: CRUD Repository Methods [20 marks]</h2>
+<p>
+<ul>
+    <li>Add a method in <code>NewspaperRepository</code> which finds the <code>newspapers</code> by <code>name</code>. [5 marks]</li>
+    <li>Add a method in <code>NewspaperRepository</code> which finds the <code>newspapers</code> by the <code>speciality</code> of their <code>boss</code>. [5 marks]</li>
+    <li>Add a method in <code>JournalistRepository</code> which finds the <code>journalists</code> by <code>speciality</code>. [5 marks]</li>
+    <li>Add a method in <code>ArticleRepository</code> which finds the <code>articles</code> by <code>visits</code>. [5 marks]</li>
+</ul>
+</p>
+<p>All CRUD repository methods <strong>must</strong> start with findBy (and not findAllBy, findOneBy, findNewspapersBy etc.)</p>
+
+<h2>Task 5: Displaying Data (Model, View, and Controller) [28 marks]</h2>
+<p>
+<ul>
+    <li>In <code>co2123.hw2.HW2Application</code>, create and store at one instance of every class from <code>co2123.hw2.model</code>. [9 marks]</li>
+    <ul>
+        <li>You will need to use the repositories you have created.</li>
+        <li>You must use implement CommandLineRunner and override its run method in order to create these instances.</li>
+        <li>The database should contain one row on each of the tables with no null or empty records.</li>
+    </ul>
+    <li>Create the controller <code>co2123.hw2.controller.ListController</code> which has three methods: /listNewspaper, /listJournalist, and /listArticle [5 marks]</li>
+    <ul>
+        <li>They all return the JSP <code>/src/main/webapp/WEB-INF/views/list.jsp</code> </li>
+        <li>Each method should list all objects (their toString() representations) from the database on the JSP. For example, /listNewspaper lists all the newspapers in the database, /listJournalist lists all the journalists, and /listArticle lists all the articles. [4 marks]</li>
+        <li>The model attribute in each method which contains the list of newspapers/journalists/articles should be called <code>data</code>.</li>
+        <li>Use a forEach loop on <code>list.jsp</code> to display the data.</li>
+    </ul>
+    <li>Create the controller <code>co2123.hw2.controller.DeleteController</code> [1 mark]</li>
+    <li>For each class in package <code>co2123.hw2.model</code>, add a controller method to delete an instance from the database and redirect to the URL <code>http://localhost:8080/</code></li>
+    <ul>
+        <li>For class <code>Newspaper</code>, the request http://localhost:8080/deleteNewspaper?id=5 should delete the newspaper with the primary key id from the database. [3 marks]</li>
+        <li>For class <code>Journalist</code>, the request http://localhost:8080/deleteJournalist?speciality=Example should delete the journalist with the primary key speciality from the database. [3 marks]</li>
+        <ul>
+            <li>HINT: You must delete all references to this journalist in the newspaper.</li>
+        </ul>
+        <li>For class <code>Article</code>, the request http://localhost:8080/deleteArticle?identifier=2 should delete the article with the primary key identifier from the database. [3 marks]</li>
+    </ul>
+</ul>
+</p>
+</body>
+</html>
